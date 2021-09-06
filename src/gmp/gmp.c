@@ -40,15 +40,15 @@ void gmp_init(struct gmp *self)
 
 void* gmp_malloc(struct gmp *self)
 {
-        if (self->first == NULL)
-                return NULL;
         void *block = self->first;
-        self->first = (void*)(*(gmp_word_t*)block);
+        self->first = (block != NULL) ? (void*)(*(gmp_word_t*)block) : NULL;
         return block;
 }
 
 void gmp_free(struct gmp *self, void *block)
 {
+        if (block == NULL)
+                return;
         gmp_word_t *next = block;
         *next = (gmp_word_t)self->first;
         self->first = next;

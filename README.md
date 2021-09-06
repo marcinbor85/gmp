@@ -12,7 +12,7 @@ typedef struct {
         int y;
 } point_t;
 
-GMP_DECLARE(point, sizeof(point_t), MAX_POINTS);
+GMP_DECLARE(point, sizeof(point_t), MAX_POINTS)
 
 int main(int argc, char *argv[])
 {
