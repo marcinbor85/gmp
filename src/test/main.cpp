@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
 
         GMP_INIT(point);
 
-        point_t *s = GMP_MALLOC(point);
+        point_t *s = (point_t *)GMP_MALLOC(point);
 
         s->x = 0;
         s->x = 1;
