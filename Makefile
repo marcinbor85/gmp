@@ -1,24 +1,33 @@
+################################################################################
+# build tools
+
 CC = gcc
 MK = mkdir
 
+################################################################################
+# project configuration
+
 PROJECT = example
 
-ROOT_DIR = $(shell realpath .)
 OUT_DIR = out
 SRC_DIR = src
-MODULES = gmp test
-
-SRC_FILES :=
-INC_DIRS :=
-
-$(foreach M, ${MODULES}, $(eval include ${SRC_DIR}/${M}/make.mk))
 
 CFLAGS = -std=c99 -Werror -Wall -Wextra --pedantic
 LDFLAGS = 
 
+################################################################################
+# prepare variables
+
+RWILDCARD = $(wildcard $1$2) $(foreach d,$(wildcard $1*),$(call RWILDCARD,$d/,$2))
+SRC_FILES = $(call RWILDCARD,${SRC_DIR}/,*.c)
+INC_FILES = $(call RWILDCARD,${SRC_DIR}/,*.h)
+INC_DIRS = ${SRC_DIR} $(patsubst %/,%,$(sort $(dir ${INC_FILES})))
 OBJ_FILES = $(addprefix ${OUT_DIR}/, ${SRC_FILES:.c=.o})
 INCLUDES = $(addprefix -I, ${INC_DIRS})
 TARGET = $(OUT_DIR)/$(PROJECT)
+
+################################################################################
+# targets, rules, dependencies
 
 .phony: all clean
 
